@@ -20,7 +20,6 @@ def train(subject, data_path, model_path, model_params, validation_params):
     x, y, filename_to_idx = d['x'], d['y'], d['filename_to_idx']
     x_test = load_test_data(data_path, subject)['x'] if model_params['use_test'] else None
 
-    # --------- add params
     model_params['n_channels'] = x.shape[1]
     model_params['n_fbins'] = x.shape[2]
     model_params['n_timesteps'] = x.shape[3]
@@ -77,21 +76,17 @@ def train(subject, data_path, model_path, model_params, validation_params):
 
     del x, x_test
 
-    print '============ dataset'
+    print 'dataset'
     print 'train:', x_train.shape
     print 'n_pos:', np.sum(y_train), 'n_neg:', len(y_train) - np.sum(y_train)
     print 'valid:', x_valid.shape
     print 'n_pos:', np.sum(y_valid), 'n_neg:', len(y_valid) - np.sum(y_valid)
-
-    # -------------- validate
     cnn = ConvNet(model_params)
     best_iter = cnn.validate(train_set=(x_train, y_train),
                              valid_set=(x_valid, y_valid),
                              valid_freq=validation_params['valid_freq'],
                              max_iter=validation_params['max_iter'],
                              fname_out=model_path + '/' + subject + '.txt')
-
-    # ---------------- scale
     d = load_train_data(data_path, subject)
     x, y, filename_to_idx = d['x'], d['y'], d['filename_to_idx']
     x_test = load_test_data(data_path, subject)['x'] if model_params['use_test'] else None
@@ -131,7 +126,7 @@ def run_trainer():
 
     subjects = ['Dog_1', 'Dog_2', 'Dog_3', 'Dog_4', 'Dog_5', 'Patient_1', 'Patient_2']
     for subject in subjects:
-        print '***********************', subject, '***************************'
+        print 'subject')
         train(subject, data_path, model_path, model_params, validation_params)
 
 
